@@ -10,31 +10,41 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-void	ft_put_lowerhexa_fd(int nb, int fd)
+int	ft_put_unsigned_lowerhexa_fd(unsigned int nb,char s, int count)
 {
-	// if (nb == -2147483648)
-	// {
-	// 	write(fd, "-2147483648", 11);
-	// 	return ;
-	// }
-	if (nb < 0)
-	{
-		write(fd, "-", 1);
-		nb *= -1;
+		ft_put_lowerhexa_fd(nb / 16, s, count);
+	return (count);
+}
+
+int	ft_put_lowerhexa_fd(int nb,char s, int count)
+{
+	if (nb < 0) {
+		count += 7;
+		count += ft_put_unsigned_lowerhexa_fd((unsigned int)nb, s, count);
+	}
+	if (nb == 0) {
+		count += ft_put_lowerhexa_fd((unsigned int)nb, s, count);
 	}
 	if (nb >= 16)
 	{
-		ft_put_lowerhexa_fd(nb / 16, fd);
+		count += 1;
+		ft_put_lowerhexa_fd(nb / 16, s, count);
 	}
+	nb = nb % 16;
 	if (nb<=9){
 		nb = (nb % 10) + 48;
+	} else if (s == 'x') {
+		nb = (nb % 10) + 'a';
 	} else {
-		nb = (nb % 10) + 97;
+		nb = (nb % 10) + 'A';
 	}
-	write(fd, &nb, 1);
+	count += write(1, &nb, 1);
+	return (count);
 }
+
+
 /*
 int main()
 {

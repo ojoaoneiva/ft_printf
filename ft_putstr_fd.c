@@ -10,18 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "ft_printf.h"
 
-void	ft_putstr_fd(const char *str, int fd)
+int	ft_putstr_fd(const char *str, int fd)
 {
 	int	i;
+	int count;
 
+	count = 0;
 	i = 0;
 	while (str[i] != '\0')
 	{
-		write(fd, &str[i], 1);
+		count += write(fd, &str[i], 1);
 		i++;
 	}
+	return(count);
 }
 
 // int	main() {

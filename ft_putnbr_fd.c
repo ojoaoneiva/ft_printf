@@ -10,14 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-void	ft_putnbr_fd(int nb, int fd)
+int	ft_putnbr_fd(int nb, int fd)
 {
+	int	count;
+
+	count = 0;
 	if (nb == -2147483648)
 	{
 		write(fd, "-2147483648", 11);
-		return ;
+		return (11);
 	}
 	if (nb < 0)
 	{
@@ -29,7 +32,8 @@ void	ft_putnbr_fd(int nb, int fd)
 		ft_putnbr_fd(nb / 10, fd);
 	}
 	nb = (nb % 10) + 48;
-	write(fd, &nb, 1);
+	count += write(fd, &nb, 1);
+	return (count);
 }
 /*
 int main()

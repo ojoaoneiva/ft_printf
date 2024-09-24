@@ -9,12 +9,13 @@
 /*   Updated: 2024/03/02 18:43:50 by jneiva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+#include "ft_printf.h"
 #include <unistd.h>
 
-void	ft_putchar_fd(char c, int fd)
+int	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
+	return (1);
 }
 /*
 int	main() {

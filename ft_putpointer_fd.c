@@ -12,19 +12,32 @@
 
 #include "ft_printf.h"
 
-int	ft_putunsignednbr_fd(unsigned int nb, int fd)
+int	ft_put_lowerhexa_fd2(unsigned long int nb, int fd, int count)
 {
-	int	count;
-
-	count = 0;
-	if (nb >= 10)
+	char x;
+	if (nb >= 16)
 	{
-		ft_putunsignednbr_fd(nb / 10, fd);
+		count += 1;
+		ft_put_lowerhexa_fd2(nb / 16, fd, count);
 	}
-	nb = (nb % 10) + 48;
-	count += write(fd, &nb, 1);
-	return (count);
+	
+	nb = nb % 16;
+	if (nb<=9){
+		x = nb + '0';
+	} else {
+		x = nb - 10 + 'a';
+	}
+	count += write(fd, &x, 1);
+	return(count);
 }
+
+int	ft_putpointer_fd(unsigned long int nb, int fd) {
+	int	count;
+	count = write(fd, "0x", 2);
+	count += ft_put_lowerhexa_fd2(nb, fd, count);
+	return(count*3);
+}
+
 /*
 int main()
 {

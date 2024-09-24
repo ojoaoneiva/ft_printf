@@ -10,83 +10,115 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
-# include <stdarg.h>
+#include "ft_printf.h"
 
-void	ft_putstr(const char *str, va_list arguments)
+static int ft_printf_aux(const char *str, va_list arguments, int i, int count)
 {
-	int	i = 0;
-	while (str[i] != '\0')
-	{
-        if(str[i] == '%')
-        {
+    if (str[i] == '%') {
+        count += ft_putchar_fd('%', 1);
+    }
+    else if (str[i] == 'c') {
+        count += ft_putchar_fd((char)va_arg(arguments, int), 1);
+    }
+    else if (str[i] == 's') {
+        count += ft_putstr_fd(va_arg(arguments, char *), 1);
+    }
+    else if (str[i] == 'p') {
+        count += ft_putpointer_fd(va_arg(arguments, unsigned long int), 1);
+    }
+    else if (str[i] == 'i' || str[i] == 'd') {
+        count += ft_putnbr_fd(va_arg(arguments, int), 1);
+    }
+    else if (str[i] == 'u') {
+        count += ft_putunsignednbr_fd(va_arg(arguments, unsigned int), 1);
+    }
+    else if (str[i] == 'X' || str[i] == 'x') {
+        count += ft_put_lowerhexa_fd(va_arg(arguments, int), str[i], 0);
+    }
+    else {
+        count += write(1, &str[i], 2);
+    }
+    return (count);
+}
+
+static int ft_putstr(const char *str, va_list arguments)
+{
+    int i;
+    int count;
+
+    count = 0;
+    i = 0;
+    while (str[i] != '\0') {
+        if (str[i] == '%') {
             i++;
-            if (str[i] == '%'){
-                ft_putchar_fd('%',1);
-            }
-            else if (str[i] == 'c'){
-                char char_arg = (char)va_arg(arguments, int);
-                ft_putchar_fd(char_arg,1);
-            }
-            else if (str[i] == 's'){
-                char *str_arg = va_arg(arguments, char *);
-                ft_putstr_fd(str_arg,1);
-            }
-            else if (str[i] == 'p'){
-                void *s = va_arg(arguments, void *);
-                unsigned char *z = (unsigned char *)s;
-                int x = (int)z;
-                ft_putnbr_fd(x,1);
-            }
-            else if (str[i] == 'i'){
-                int num;
-                num = va_arg(arguments, int);
-                ft_putnbr_fd(num,1);
-            }
-            else if (str[i] == 'd'){
-                int num;
-                num = va_arg(arguments, int);
-                ft_putdecnbr_fd(num,1);
-            }
-            else if (str[i] == 'u'){
-                unsigned int num;
-                num = va_arg(arguments,unsigned int);
-                ft_putunsignednbr_fd(num,1);
-            }
-            else if (str[i] == 'X'){
-                int num;
-                num = va_arg(arguments, int);
-                ft_put_upperhexa_fd(num,1);
-            }
-            else if (str[i] == 'x'){
-                int num;
-                num = va_arg(arguments, int);
-                ft_put_lowerhexa_fd(num,1);
-            }
-            else {
-            write(1, &str[i], 2);
-            }
-            i++;
-        } else {
-            write(1, &str[i], 1);
+            count = ft_printf_aux(str, arguments, i, count);
             i++;
         }
-	}
+        else {
+            count += write(1, &str[i], 1);
+            i++;
+        }
+    }
+    return (count);
 }
-int ft_printf(const char *str, ...){
+
+int ft_printf(const char *str, ...)
+{
+    int count;
+
     va_list arguments;
     va_start(arguments, str);
-    ft_putstr(str,  arguments);
+    count = ft_putstr(str, arguments);
     va_end(arguments);
-    return(0);
+    return (count);
 }
-int main(){
-    char x[] = "abcd";
-    //printf("\n Printf original1:    %u \n", -11);
-    //printf("\n Printf original2:    %X \n", 11);
-    ft_printf("%p",11);
-    //ft_printf("%u",11);
+int main()
+{
+    // int x = 3;
+    int n;
+    int m;
+    // printf("\n O: %% \n");
+    // printf("\n N: %d \n", printf("\n O: %% \n"));
+    // ft_printf("\n123 %%");
+    // printf("\n N2: %d \n", ft_printf("\n123 %%"));
 
-    //ft_printf("pdAh%%fgjf %d %u %s %c",-13,49,"word",'z');
+    // printf("\n  O:  %c \n", 'z');
+    // printf("\n N: %d \n", printf("\n  O:  %c \n", 'z'));
+    // ft_printf("\n%c", 'z');
+    // printf("\n N2: %d \n", ft_printf("\n%c", 'z'));
 
+    // printf("\n  O:  %s \n", "word");
+    // printf("\n N: %d \n", printf("\n  O:  %s \n", "word"));
+    // ft_printf("\n%s", "word");
+    // printf("\n N2: %d \n", ft_printf("\n%s", "word"));
+
+    n = printf("%x", -146);
+    printf("\n%d\n", n);
+    m = ft_printf("%x", -146);
+    printf("\n%d\n", m);
+
+    // printf("\n  O:  %X \n", 11);
+    // printf("\n N: %d \n", printf("\n  O:  %X \n", 11));
+    // ft_printf("\n%X", 11);
+    // printf("\n N2: %d \n", ft_printf("\n%X", 11));
+
+    // printf("\n  O:  %i \n", -10);
+    // printf("\n N: %d \n", printf("\n  O:  %i \n", -10));
+    // ft_printf("\n%i", -10);
+    // printf("\n N2: %d \n", ft_printf("\n%i", -10));
+
+    // printf("\n  O:  %d \n", -10);
+    // printf("\n N: %d \n", printf("\n  O:  %d \n", -10));
+    // ft_printf("\n%d", -10);
+    // printf("\n N2: %d \n", ft_printf("\n%d", -10));
+
+    // printf("\n  O:  %u \n", 10);
+    // printf("\n N: %d \n", printf("\n  O:  %u \n", 10));
+    // ft_printf("\n%u", 10);
+    // printf("\n N2: %d \n", ft_printf("\n%u", 10));
+    
+    // n = printf("%p", &x);
+    // printf("\n N: %d", n);
+    // m = ft_printf("%p", &x);
+    // printf("\n N2: %d", n);
 }
