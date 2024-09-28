@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jneiva-s <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 17:41:20 by jneiva-s          #+#    #+#             */
-/*   Updated: 2024/03/13 19:24:07 by jneiva-s         ###   ########.fr       */
+/*   Updated: 2024/09/28 19:55:41 by jneiva-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,20 @@
 int	ft_putstr_fd(const char *str, int fd)
 {
 	int	i;
-	int count;
+	int	count;
 
 	count = 0;
 	i = 0;
+	if (!str)
+		str = "(null)";
+	if (!fd)
+		return (-1);
 	while (str[i] != '\0')
 	{
 		count += write(fd, &str[i], 1);
 		i++;
 	}
-	return(count);
+	return (count);
 }
 
 // int	main() {
