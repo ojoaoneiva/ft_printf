@@ -1,9 +1,9 @@
 NAME = libftprintf.a
 
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Werror -Wextra
 
-SRCS := ft_putnbr_fd.c ft_printf.c ft_putpointer_fd.c ft_putstr_fd.c ft_putchar_fd.c ft_put_hexa_fd.c ft_putunsignednbr_fd.c
+SRCS := ft_putnbr_fd.c ft_printf.c ft_putpointer.c ft_putstr.c ft_putchar.c ft_put_hexa_fd.c ft_putunsignednbr_fd.c
 
 OBJS := $(SRCS:.c=.o)
 

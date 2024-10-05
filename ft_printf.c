@@ -15,13 +15,13 @@
 static int	ft_printf_aux(const char *str, va_list arguments, int i, int count)
 {
 	if (str[i] == '%')
-		count += ft_putchar_fd('%', 1);
+		count += ft_putchar('%');
 	else if (str[i] == 'c')
-		count += ft_putchar_fd(va_arg(arguments, int), 1);
+		count += ft_putchar(va_arg(arguments, int));
 	else if (str[i] == 's')
-		count += ft_putstr_fd(va_arg(arguments, char *), 1);
+		count += ft_putstr(va_arg(arguments, char *));
 	else if (str[i] == 'p')
-		count += ft_putpointer_fd(va_arg(arguments, unsigned long int), 1);
+		count += ft_putpointer(va_arg(arguments, unsigned long int));
 	else if (str[i] == 'i' || str[i] == 'd')
 		count += ft_putnbr_fd(va_arg(arguments, int), 1, 0);
 	else if (str[i] == 'u')
@@ -29,11 +29,11 @@ static int	ft_printf_aux(const char *str, va_list arguments, int i, int count)
 	else if (str[i] == 'X' || str[i] == 'x')
 		count += ft_put_hexa_fd(va_arg(arguments, unsigned int), str[i], 0);
 	else
-		count += write(1, &str[i], 2);
+		count = -1;
 	return (count);
 }
 
-static int	ft_putstr(const char *str, va_list arguments)
+static int	ft_putstr_aux(const char *str, va_list arguments)
 {
 	int	i;
 	int	count;
@@ -42,6 +42,8 @@ static int	ft_putstr(const char *str, va_list arguments)
 	i = 0;
 	while (str[i] != '\0')
 	{
+		if (count == -1)
+			return (-1);
 		if (str[i] == '%')
 		{
 			i++;
@@ -65,10 +67,27 @@ int	ft_printf(const char *str, ...)
 	if (!str)
 		return (-1);
 	va_start(arguments, str);
-	count = ft_putstr(str, arguments);
+	count = ft_putstr_aux(str, arguments);
 	va_end(arguments);
 	return (count);
 }
+
+// int main()
+// {
+// 	int m;
+// 	m = ft_printf("%");
+// 	ft_printf("%d", m);
+// 	return 0;
+// }
+
+// int main()
+// {
+// 	int m;
+// 	m = ft_printf(NULL);
+// 	ft_printf("%d", m);
+// 	return 0;
+// }
+
 // int main()
 // {
 //     int x = 15;
@@ -131,10 +150,4 @@ int	ft_printf(const char *str, ...)
 //     printf("\n N2: %d\n\n", m);
 
 //     return 0;
-// }
-
-// int main()
-// {
-// ft_printf(0);
-// return 0;
 // }

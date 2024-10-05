@@ -25,23 +25,8 @@ int	ft_putnbr_fd(int nb, int fd, int count)
 		nb *= -1;
 	}
 	if (nb >= 10)
-	{
 		count = ft_putnbr_fd(nb / 10, fd, count);
-	}
 	nb = (nb % 10) + 48;
 	count += write(fd, &nb, 1);
 	return (count);
 }
-/*
-int main()
-{
-	ft_putnbr_fd(-10, 1);
-	write(1, "\n", 1);
-	ft_putnbr_fd(142, 1);
-	write(1, "\n", 1);
-	ft_putnbr_fd(0, 1);
-	write(1, "\n", 1);
-	ft_putnbr_fd(-2147483648, 1);
-	write(1, "\n", 1);
-	return (0);
-}*/

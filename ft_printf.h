@@ -20,12 +20,12 @@
 # include <stdint.h>
 # include <stdarg.h>
 
-int	ft_putchar_fd(char c, int fd);
+int	ft_putchar(char c);
 int	ft_putnbr_fd(int nb, int fd, int count);
-int	ft_putpointer_fd(unsigned long int nb, int fd);
+int	ft_putpointer(unsigned long int nb);
 int	ft_put_hexa_fd(unsigned int nb, char s, int count);
 int	ft_putunsignednbr_fd(unsigned int nb, int fd, int count);
-int	ft_putstr_fd(const char *str, int fd);
+int	ft_putstr(const char *str);
 int	ft_printf(const char *str, ...);
 
 #endif
